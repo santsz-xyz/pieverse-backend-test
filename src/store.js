@@ -23,9 +23,11 @@ async function getById(id) {
 }
 
 async function insert(title) {
+  // FIX: Klaim dan naikkan ID secara sinkronus sebelum proses await (mencegah race condition)
   const id = nextId;
+  nextId += 1; 
+  
   await simulateLatency(); // simulates the round-trip to persist the new row
-  nextId = id + 1;
 
   const task = { id, title, completed: false };
   tasks.push(task);
